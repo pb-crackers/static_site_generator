@@ -15,8 +15,8 @@ class TestTextNode(unittest.TestCase):
         self.assertNotEqual(node, node2)
 
     def test_eq_more(self):
-        node = TextNode("My Text", TextType.NORMAL_TEXT, url="www.test.com")
-        node2 = TextNode("My Text", TextType.NORMAL_TEXT, url="www.test.com")
+        node = TextNode("My Text", TextType.TEXT, url="www.test.com")
+        node2 = TextNode("My Text", TextType.TEXT, url="www.test.com")
         self.assertEqual(node, node2)
     
     def test_more_not_eq(self):
