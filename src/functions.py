@@ -1,5 +1,6 @@
 from htmlnode import *
 from textnode import *
+import re
 
 def text_node_to_html_node(text_node):
     if text_node.text_type == TextType.TEXT:
@@ -40,3 +41,19 @@ def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type: TextType) 
             new_nodes.append(node)
 
     return new_nodes
+
+def extract_markdown_images(text):
+    # takes a string, returns tuple: (alt text, url)
+    try:
+        matches = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+        return matches
+    except Exception:
+        return "The markdown provided is not valid. There may be nested brackets."
+
+def extract_markdown_links(text):
+    # takes a string, returns tuple: (hyperlink text, url)
+    try:
+        matches = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+        return matches
+    except Exception:
+        return "The markdown provided is not valid. There may be nested brackets."
