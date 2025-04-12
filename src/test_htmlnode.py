@@ -2,6 +2,7 @@ import unittest
 
 from textnode import *
 from htmlnode import *
+from functions import *
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html(self):
@@ -97,6 +98,22 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(html_node.tag, "img")
         self.assertEqual(html_node.value, "")
         self.assertEqual(html_node.props, {"src":"www.mylink.com", "alt": "My text"})
+
+    def testing_split_nodes_delimiter_func(self):
+        node1 = TextNode("This is text with a **bold** word", TextType.TEXT)
+        node2 = TextNode("This is text with a `code block` thang in it", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node1, node2], "**", TextType.BOLD)
+        new_nodes = split_nodes_delimiter(new_nodes, "`", TextType.CODE)
+        answer = [TextNode("This is text with a ", TextType.TEXT, None), TextNode("bold", TextType.BOLD, None), TextNode(" word", TextType.TEXT, None), TextNode("This is text with a ", TextType.TEXT, None), TextNode("code block", TextType.CODE, None), TextNode(" thang in it", TextType.TEXT, None)]
+        self.assertEqual(new_nodes, answer)
+
+    def testing_split_nodes_delimiter_func_missing_delim(self):
+        node1 = TextNode("This is text with a **bold** word", TextType.TEXT)
+        node2 = TextNode("This is text with a `code block thang in it", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node1, node2], "**", TextType.BOLD)
+        with self.assertRaises(Exception):
+            split_nodes_delimiter(new_nodes, "`", TextType.CODE)
+
 
 
 if __name__ == "__main__":
